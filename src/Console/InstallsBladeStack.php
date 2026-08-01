@@ -17,12 +17,13 @@ trait InstallsBladeStack
     {
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
+            unset($packages['autoprefixer'], $packages['postcss']);
+
             return [
-                '@tailwindcss/forms' => '^0.5.2',
+                '@tailwindcss/forms' => '^0.5.10',
+                '@tailwindcss/vite' => '^4.0.0',
                 'alpinejs' => '^3.4.2',
-                'autoprefixer' => '^10.4.2',
-                'postcss' => '^8.4.31',
-                'tailwindcss' => '^3.1.0',
+                'tailwindcss' => '^4.0.0',
             ] + $packages;
         });
 
@@ -65,8 +66,8 @@ trait InstallsBladeStack
         $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
 
         // Tailwind / Vite...
-        copy(__DIR__.'/../../stubs/default/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/default/postcss.config.js', base_path('postcss.config.js'));
+        (new Filesystem)->delete([base_path('tailwind.config.js'), base_path('postcss.config.js')]);
+
         copy(__DIR__.'/../../stubs/default/vite.config.js', base_path('vite.config.js'));
         copy(__DIR__.'/../../stubs/default/resources/css/app.css', resource_path('css/app.css'));
         copy(__DIR__.'/../../stubs/default/resources/js/app.js', resource_path('js/app.js'));

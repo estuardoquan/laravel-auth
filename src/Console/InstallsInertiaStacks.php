@@ -22,13 +22,14 @@ trait InstallsInertiaStacks
 
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
+            unset($packages['autoprefixer'], $packages['postcss']);
+
             return [
                 '@inertiajs/vue3' => '^2.0.0',
-                '@tailwindcss/forms' => '^0.5.3',
+                '@tailwindcss/forms' => '^0.5.10',
+                '@tailwindcss/vite' => '^4.0.0',
                 '@vitejs/plugin-vue' => '^6.0.0',
-                'autoprefixer' => '^10.4.12',
-                'postcss' => '^8.4.31',
-                'tailwindcss' => '^3.2.1',
+                'tailwindcss' => '^4.0.0',
                 'vue' => '^3.4.0',
             ] + $packages;
         });
@@ -51,7 +52,7 @@ trait InstallsInertiaStacks
                     '@vue/eslint-config-prettier' => '^9.0.0',
                     'prettier' => '^3.3.0',
                     'prettier-plugin-organize-imports' => '^4.0.0',
-                    'prettier-plugin-tailwindcss' => '^0.6.5',
+                    'prettier-plugin-tailwindcss' => '^0.6.11',
                 ] + $packages;
             });
 
@@ -82,18 +83,16 @@ trait InstallsInertiaStacks
             copy(__DIR__ . '/../../stubs/inertia-common/.prettierrc', base_path('.prettierrc'));
         }
 
-        $f = fn() => new Filesystem;
-
         // Providers...
-        $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-common/app/Providers', app_path('Providers'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-common/app/Providers', app_path('Providers'));
 
         // Controllers...
-        $f()->ensureDirectoryExists(app_path('Http/Controllers'));
-        $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-common/app/Http/Controllers', app_path('Http/Controllers'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Controllers'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-common/app/Http/Controllers', app_path('Http/Controllers'));
 
         // Requests...
-        $f()->ensureDirectoryExists(app_path('Http/Requests'));
-        $f()->copyDirectory(__DIR__ . '/../../stubs/default/app/Http/Requests', app_path('Http/Requests'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/default/app/Http/Requests', app_path('Http/Requests'));
 
         // Middleware...
         $this->installMiddleware([
@@ -101,7 +100,7 @@ trait InstallsInertiaStacks
             '\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class',
         ]);
 
-        $f()->ensureDirectoryExists(app_path('Http/Middleware'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Middleware'));
         copy(__DIR__ . '/../../stubs/inertia-common/app/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
 
         // Views...
@@ -110,19 +109,19 @@ trait InstallsInertiaStacks
         @unlink(resource_path('views/welcome.blade.php'));
 
         // Components + Pages...
-        $f()->ensureDirectoryExists(resource_path('js/Components'));
-        $f()->ensureDirectoryExists(resource_path('js/Layouts'));
-        $f()->ensureDirectoryExists(resource_path('js/Pages'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Components'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Layouts'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages'));
 
         if ($this->option('typescript')) {
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/Components', resource_path('js/Components'));
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/Layouts', resource_path('js/Layouts'));
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/Pages', resource_path('js/Pages'));
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/types', resource_path('js/types'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/Components', resource_path('js/Components'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/Layouts', resource_path('js/Layouts'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/Pages', resource_path('js/Pages'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/types', resource_path('js/types'));
         } else {
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue/resources/js/Components', resource_path('js/Components'));
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue/resources/js/Layouts', resource_path('js/Layouts'));
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-vue/resources/js/Pages', resource_path('js/Pages'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue/resources/js/Components', resource_path('js/Components'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue/resources/js/Layouts', resource_path('js/Layouts'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-vue/resources/js/Pages', resource_path('js/Pages'));
         }
 
         if (! $this->option('dark')) {
@@ -139,9 +138,9 @@ trait InstallsInertiaStacks
         }
 
         if ($this->option('pest')) {
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-common/pest-tests/Feature', base_path('tests/Feature'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-common/pest-tests/Feature', base_path('tests/Feature'));
         } else {
-            $f()->copyDirectory(__DIR__ . '/../../stubs/inertia-common/tests/Feature', base_path('tests/Feature'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia-common/tests/Feature', base_path('tests/Feature'));
         }
 
         // Routes...
@@ -149,9 +148,9 @@ trait InstallsInertiaStacks
         copy(__DIR__ . '/../../stubs/inertia-common/routes/auth.php', base_path('routes/auth.php'));
 
         // Tailwind / Vite...
+        (new Filesystem)->delete([base_path('tailwind.config.js'), base_path('postcss.config.js')]);
+
         copy(__DIR__ . '/../../stubs/default/resources/css/app.css', resource_path('css/app.css'));
-        copy(__DIR__ . '/../../stubs/default/postcss.config.js', base_path('postcss.config.js'));
-        copy(__DIR__ . '/../../stubs/inertia-common/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__ . '/../../stubs/inertia-vue/vite.config.js', base_path('vite.config.js'));
 
         if ($this->option('typescript')) {
