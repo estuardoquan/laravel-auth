@@ -76,6 +76,10 @@ trait InstallsBladeStack
             $this->replaceInFile("import './bootstrap';", '', resource_path('js/app.js'));
         }
 
+        if ($this->option('https')) {
+            $this->configureHttps();
+        }
+
         $this->components->info('Installing and building Node dependencies.');
 
         if (file_exists(base_path('pnpm-lock.yaml'))) {

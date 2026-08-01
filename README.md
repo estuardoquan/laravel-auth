@@ -34,12 +34,20 @@ php artisan laravel-auth:install vue --typescript --ssr --eslint
 | `--typescript` | `vue` | Publishes the `.ts` entrypoint, `resources/js/types`, and `tsconfig.json` |
 | `--ssr` | `vue` | Publishes the SSR entrypoint and wires Ziggy and Vite for SSR |
 | `--eslint` | `vue` | Publishes `.eslintrc.cjs` and `.prettierrc`, and adds a `lint` script |
+| `--https` | both | Adds `vite-plugin-https` and rewrites `vite.config.js` around it |
 | `--pest` | both | Publishes Pest tests instead of PHPUnit tests |
 | `--composer` | both | Absolute path to the Composer binary |
 
 Without `--typescript`, the Vue stack publishes `resources/js/app.js` and the JavaScript
 components from `stubs/inertia-vue`. With it, `resources/js/app.ts`, the TypeScript
 components from `stubs/inertia-vue-ts`, and `resources/js/types`.
+
+`--https` adds `vite-plugin-https` to `devDependencies` as
+`github:estuardoquan/vite-plugin-https` — it is not on npm — imports it in
+`vite.config.js`, appends `https()` to the plugin list, and wraps the config in
+`defineConfig(async () => ({ ... }))`, since the plugin reads the cert/key pair
+asynchronously. It runs with the plugin's defaults: `site.crt` and `site.key` under
+`/var/local/ssl`.
 
 ## Pages published by the Vue stack
 

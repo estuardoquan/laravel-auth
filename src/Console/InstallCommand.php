@@ -36,6 +36,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                             {--ssr : Indicates if Inertia SSR support should be installed}
                             {--typescript : Indicates if TypeScript is preferred for the Inertia stack}
                             {--eslint : Indicates if ESLint with Prettier should be installed}
+                            {--https : Indicates if the Vite dev server should be served over HTTPS}
                             {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -305,6 +306,38 @@ class InstallCommand extends Command implements PromptsForMissingInput
     }
 
     /**
+     * Configure the Vite configuration for HTTPS.
+     *
+     * @return void
+     */
+    protected function configureHttps()
+    {
+        $this->updateNodePackages(function ($packages) {
+            return [
+                'vite-plugin-https' => 'github:estuardoquan/vite-plugin-https',
+            ] + $packages;
+        });
+
+        $this->replaceInFile(
+            "import { defineConfig } from 'vite';",
+            "import { defineConfig } from 'vite';" . PHP_EOL . "import https from 'vite-plugin-https';",
+            base_path('vite.config.js')
+        );
+
+        $this->replaceInFile(
+            'export default defineConfig({',
+            'export default defineConfig(async () => ({',
+            base_path('vite.config.js')
+        );
+
+        $this->replaceInFile(
+            '    ],' . PHP_EOL . '});',
+            '        https(),' . PHP_EOL . '    ],' . PHP_EOL . '}));',
+            base_path('vite.config.js')
+        );
+    }
+
+    /**
      * Replace a given string within a given file.
      *
      * @param  string  $search
@@ -402,12 +435,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
                     'ssr' => 'Inertia SSR',
                     'typescript' => 'TypeScript',
                     'eslint' => 'ESLint with Prettier',
+                    'https' => 'HTTPS dev server',
                 ],
                 hint: 'Use the space bar to select options.'
             ))->each(fn($option) => $input->setOption($option, true));
         } elseif ($stack === 'blade') {
             $input->setOption('dark', confirm(
                 label: 'Would you like dark mode support?',
+                default: false
+            ));
+
+            $input->setOption('https', confirm(
+                label: 'Would you like an HTTPS dev server?',
                 default: false
             ));
         }
