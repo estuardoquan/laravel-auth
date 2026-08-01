@@ -10,15 +10,15 @@ complete: controllers, form requests, routes, middleware, views/components and t
 
 ```bash
 composer require estuardoquan/laravel-auth --dev
-php artisan auth:install
+php artisan laravel-auth:install
 ```
 
 ## Stacks
 
 ```bash
-php artisan auth:install blade
-php artisan auth:install vue
-php artisan auth:install vue --typescript --ssr --eslint
+php artisan laravel-auth:install blade
+php artisan laravel-auth:install vue
+php artisan laravel-auth:install vue --typescript --ssr --eslint
 ```
 
 | Stack | Argument | Published |

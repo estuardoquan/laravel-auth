@@ -20,7 +20,7 @@ use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\select;
 
-#[AsCommand(name: 'auth:install')]
+#[AsCommand(name: 'laravel-auth:install')]
 class InstallCommand extends Command implements PromptsForMissingInput
 {
     use InstallsBladeStack, InstallsInertiaStacks;
@@ -30,7 +30,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'auth:install {stack : The development stack that should be installed (blade,vue)}
+    protected $signature = 'laravel-auth:install {stack : The development stack that should be installed (blade,vue)}
                             {--dark : Indicate that dark mode support should be installed}
                             {--pest : Indicate that Pest should be installed}
                             {--ssr : Indicates if Inertia SSR support should be installed}
