@@ -185,6 +185,10 @@ trait InstallsInertiaStacks
             $this->installInertiaVueSsrStack();
         }
 
+        if ($this->option('container')) {
+            $this->configureContainer();
+        }
+
         if ($this->option('https')) {
             $this->configureHttps();
         }

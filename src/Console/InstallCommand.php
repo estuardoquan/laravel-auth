@@ -37,6 +37,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                             {--typescript : Indicates if TypeScript is preferred for the Inertia stack}
                             {--eslint : Indicates if ESLint with Prettier should be installed}
                             {--https : Indicates if the Vite dev server should be served over HTTPS}
+                            {--container : Indicates if the Vite dev server should be exposed for a containerized environment}
                             {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -338,6 +339,28 @@ class InstallCommand extends Command implements PromptsForMissingInput
     }
 
     /**
+     * Configure the Vite configuration for a containerized environment.
+     *
+     * @return void
+     */
+    protected function configureContainer()
+    {
+        $this->replaceInFile(
+            '    plugins: [',
+            '    server: {' . PHP_EOL
+                . '        host: true,' . PHP_EOL
+                . '        port: 5173,' . PHP_EOL
+                . '        hmr: {' . PHP_EOL
+                . '            host: process.env.VITECONFIG_HMR_HOST,' . PHP_EOL
+                . '            clientPort: process.env.VITECONFIG_HMR_CLIENTPORT,' . PHP_EOL
+                . '        },' . PHP_EOL
+                . '    },' . PHP_EOL
+                . '    plugins: [',
+            base_path('vite.config.js')
+        );
+    }
+
+    /**
      * Replace a given string within a given file.
      *
      * @param  string  $search
@@ -436,6 +459,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                     'typescript' => 'TypeScript',
                     'eslint' => 'ESLint with Prettier',
                     'https' => 'HTTPS dev server',
+                    'container' => 'Containerized dev server',
                 ],
                 hint: 'Use the space bar to select options.'
             ))->each(fn($option) => $input->setOption($option, true));
@@ -447,6 +471,11 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
             $input->setOption('https', confirm(
                 label: 'Would you like an HTTPS dev server?',
+                default: false
+            ));
+
+            $input->setOption('container', confirm(
+                label: 'Would you like a containerized dev server?',
                 default: false
             ));
         }

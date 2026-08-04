@@ -29,7 +29,7 @@ php artisan laravel-auth:install
 ```bash
 php artisan laravel-auth:install blade
 php artisan laravel-auth:install vue
-php artisan laravel-auth:install vue --typescript --ssr --eslint
+php artisan laravel-auth:install vue --typescript --https --dark
 ```
 
 | Stack       | Argument | Published                                                                                                                                                       |

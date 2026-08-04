@@ -76,6 +76,10 @@ trait InstallsBladeStack
             $this->replaceInFile("import './bootstrap';", '', resource_path('js/app.js'));
         }
 
+        if ($this->option('container')) {
+            $this->configureContainer();
+        }
+
         if ($this->option('https')) {
             $this->configureHttps();
         }
