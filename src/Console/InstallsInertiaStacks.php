@@ -26,7 +26,10 @@ trait InstallsInertiaStacks
 
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
-            unset($packages['autoprefixer'], $packages['postcss']);
+            unset(
+                $packages['autoprefixer'],
+                $packages['postcss']
+            );
 
             return [
                 '@inertiajs/vue3' => '^2.0.0',
