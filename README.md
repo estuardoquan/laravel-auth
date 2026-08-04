@@ -109,7 +109,8 @@ Namespace: `EQ\Laravel\Auth\`.
 
 ## Requirements
 
-PHP 8.2+, Laravel 11, 12 or 13.
+PHP 8.2+, Laravel 12 or 13. The Vue stack installs Inertia 3 (`inertiajs/inertia-laravel`
+`^3.0` and `@inertiajs/vue3` `^3.0`).
 
 ## Licence
 

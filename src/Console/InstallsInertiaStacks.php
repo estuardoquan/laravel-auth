@@ -17,7 +17,7 @@ trait InstallsInertiaStacks
     {
         // Install Inertia...
         if (! $this->requireComposerPackages([
-            'inertiajs/inertia-laravel:^2.0',
+            'inertiajs/inertia-laravel:^3.0',
             // 'laravel/sanctum:^4.0', // We're using passport, this will remove on next big update
             'tightenco/ziggy:^2.0'
         ])) {
@@ -26,13 +26,8 @@ trait InstallsInertiaStacks
 
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
-            unset(
-                $packages['autoprefixer'],
-                $packages['postcss']
-            );
-
             return [
-                '@inertiajs/vue3' => '^2.0.0',
+                '@inertiajs/vue3' => '^3.0',
                 '@tailwindcss/forms' => '^0.5.10',
                 '@tailwindcss/vite' => '^4.0.0',
                 '@vitejs/plugin-vue' => '^6.0.0',

@@ -17,8 +17,6 @@ trait InstallsBladeStack
     {
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
-            unset($packages['autoprefixer'], $packages['postcss']);
-
             return [
                 '@tailwindcss/forms' => '^0.5.10',
                 '@tailwindcss/vite' => '^4.0.0',
