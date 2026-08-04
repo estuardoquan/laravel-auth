@@ -8,8 +8,19 @@ complete: controllers, form requests, routes, middleware, views/components and t
 
 ## Installation
 
+Add Github repository to composer.json
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/estuardoquan/laravel-auth"
+    }
+],
+```
+
 ```bash
-composer require estuardoquan/laravel-auth --dev
+composer require estuardoquan/laravel-auth:dev-main --dev
 php artisan laravel-auth:install
 ```
 
@@ -21,22 +32,22 @@ php artisan laravel-auth:install vue
 php artisan laravel-auth:install vue --typescript --ssr --eslint
 ```
 
-| Stack | Argument | Published |
-| ----- | -------- | --------- |
-| Blade | `blade` | Auth controllers, form requests, routes, `app/View/Components`, the full `resources/views` set, Tailwind/Vite config, tests |
-| Inertia Vue | `vue` | Auth controllers, form requests, routes, `HandleInertiaRequests` middleware, `resources/js/{Components,Layouts,Pages}`, entrypoint, Tailwind/Vite config, tests |
+| Stack       | Argument | Published                                                                                                                                                       |
+| ----------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Blade       | `blade`  | Auth controllers, form requests, routes, `app/View/Components`, the full `resources/views` set, Tailwind/Vite config, tests                                     |
+| Inertia Vue | `vue`    | Auth controllers, form requests, routes, `HandleInertiaRequests` middleware, `resources/js/{Components,Layouts,Pages}`, entrypoint, Tailwind/Vite config, tests |
 
 ### Options
 
-| Option | Applies to | Effect |
-| ------ | ---------- | ------ |
-| `--dark` | both | Keeps Tailwind `dark:` classes in the published views and components |
-| `--typescript` | `vue` | Publishes the `.ts` entrypoint, `resources/js/types`, and `tsconfig.json` |
-| `--ssr` | `vue` | Publishes the SSR entrypoint and wires Ziggy and Vite for SSR |
-| `--eslint` | `vue` | Publishes `.eslintrc.cjs` and `.prettierrc`, and adds a `lint` script |
-| `--https` | both | Adds `vite-plugin-https` and rewrites `vite.config.js` around it |
-| `--pest` | both | Publishes Pest tests instead of PHPUnit tests |
-| `--composer` | both | Absolute path to the Composer binary |
+| Option         | Applies to | Effect                                                                    |
+| -------------- | ---------- | ------------------------------------------------------------------------- |
+| `--dark`       | both       | Keeps Tailwind `dark:` classes in the published views and components      |
+| `--typescript` | `vue`      | Publishes the `.ts` entrypoint, `resources/js/types`, and `tsconfig.json` |
+| `--ssr`        | `vue`      | Publishes the SSR entrypoint and wires Ziggy and Vite for SSR             |
+| `--eslint`     | `vue`      | Publishes `.eslintrc.cjs` and `.prettierrc`, and adds a `lint` script     |
+| `--https`      | both       | Adds `vite-plugin-https` and rewrites `vite.config.js` around it          |
+| `--pest`       | both       | Publishes Pest tests instead of PHPUnit tests                             |
+| `--composer`   | both       | Absolute path to the Composer binary                                      |
 
 Without `--typescript`, the Vue stack publishes `resources/js/app.js` and the JavaScript
 components from `stubs/inertia-vue`. With it, `resources/js/app.ts`, the TypeScript
