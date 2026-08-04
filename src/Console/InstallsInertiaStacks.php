@@ -224,10 +224,10 @@ trait InstallsInertiaStacks
 
         if ($this->option('typescript')) {
             copy(__DIR__ . '/../../stubs/inertia-vue-ts/resources/js/ssr.ts', resource_path('js/ssr.ts'));
-            $this->replaceInFile("input: 'resources/js/app.ts',", "input: 'resources/js/app.ts'," . PHP_EOL . "            ssr: 'resources/js/ssr.ts',", base_path('vite.config.js'));
+            $this->replaceInFile("input: ['resources/js/app.ts'],", "input: ['resources/js/app.ts']," . PHP_EOL . "            ssr: 'resources/js/ssr.ts',", base_path('vite.config.js'));
         } else {
             copy(__DIR__ . '/../../stubs/inertia-vue/resources/js/ssr.js', resource_path('js/ssr.js'));
-            $this->replaceInFile("input: 'resources/js/app.js',", "input: 'resources/js/app.js'," . PHP_EOL . "            ssr: 'resources/js/ssr.js',", base_path('vite.config.js'));
+            $this->replaceInFile("input: ['resources/js/app.js'],", "input: ['resources/js/app.js']," . PHP_EOL . "            ssr: 'resources/js/ssr.js',", base_path('vite.config.js'));
         }
 
         $this->configureZiggyForSsr();

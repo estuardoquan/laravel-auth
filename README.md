@@ -11,12 +11,12 @@ complete: controllers, form requests, routes, middleware, views/components and t
 Add Github repository to composer.json
 
 ```json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/estuardoquan/laravel-auth"
-    }
-],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/estuardoquan/laravel-auth"
+        }
+    ],
 ```
 
 ```bash
@@ -75,7 +75,7 @@ defaults: `site.crt` and `site.key` under `/var/local/ssl`.
 ```
 
 Combined with `--https`, it also uncomments the plugin's `path` and points it at
-`process.env.VITECONFIG_SSL_PATH`, since the certificates live outside the container
+`process.env.VITECONFIG_HTTPS_PATH`, since the certificates live outside the container
 image. The two flags are independent of each other's order.
 
 ## Pages published by the Vue stack

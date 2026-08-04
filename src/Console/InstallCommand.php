@@ -332,7 +332,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         );
 
         $path = $this->option('container')
-            ? '            path: process.env.VITECONFIG_SSL_PATH,'
+            ? '            path: process.env.VITECONFIG_HTTPS_PATH,'
             : "            // path: '/var/local/ssl',";
 
         $this->replaceInFile(

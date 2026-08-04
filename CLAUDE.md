@@ -122,7 +122,8 @@ stubs/
 
 `stubs/inertia-vue-ts` is byte-identical to upstream Breeze. `stubs/inertia-vue` is too
 except for `vite.config.js`, which carries the Tailwind v4 plugin (upstream is still on
-v3). Any other change to either is a deliberate divergence, not a sync gap.
+v3) and an array-form `input:` for the Laravel plugin (upstream passes a bare string).
+Any other change to either is a deliberate divergence, not a sync gap.
 
 ## Invariants to preserve
 
