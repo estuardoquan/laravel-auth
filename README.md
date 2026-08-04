@@ -29,7 +29,7 @@ php artisan laravel-auth:install
 ```bash
 php artisan laravel-auth:install blade
 php artisan laravel-auth:install vue
-php artisan laravel-auth:install vue --typescript --https --dark
+php artisan laravel-auth:install vue --typescript --container --https --dark
 ```
 
 | Stack       | Argument | Published                                                                                                                                                       |
@@ -46,6 +46,7 @@ php artisan laravel-auth:install vue --typescript --https --dark
 | `--ssr`        | `vue`      | Publishes the SSR entrypoint and wires Ziggy and Vite for SSR             |
 | `--eslint`     | `vue`      | Publishes `.eslintrc.cjs` and `.prettierrc`, and adds a `lint` script     |
 | `--https`      | both       | Adds `vite-plugin-https` and rewrites `vite.config.js` around it          |
+| `--container`  | both       | Adds a `server` block to `vite.config.js` for a containerized dev server  |
 | `--pest`       | both       | Publishes Pest tests instead of PHPUnit tests                             |
 | `--composer`   | both       | Absolute path to the Composer binary                                      |
 
@@ -55,10 +56,27 @@ components from `stubs/inertia-vue-ts`, and `resources/js/types`.
 
 `--https` adds `vite-plugin-https` to `devDependencies` as
 `github:estuardoquan/vite-plugin-https` — it is not on npm — imports it in
-`vite.config.js`, appends `https()` to the plugin list, and wraps the config in
+`vite.config.js`, appends `https({ ... })` to the plugin list, and wraps the config in
 `defineConfig(async () => ({ ... }))`, since the plugin reads the cert/key pair
-asynchronously. It runs with the plugin's defaults: `site.crt` and `site.key` under
-`/var/local/ssl`.
+asynchronously. On its own it leaves `path` commented out, so the plugin runs with its
+defaults: `site.crt` and `site.key` under `/var/local/ssl`.
+
+`--container` inserts a `server` block above the plugin list:
+
+```js
+    server: {
+        host: true,
+        port: 5173,
+        hmr: {
+            host: process.env.VITECONFIG_HMR_HOST,
+            clientPort: process.env.VITECONFIG_HMR_CLIENTPORT,
+        },
+    },
+```
+
+Combined with `--https`, it also uncomments the plugin's `path` and points it at
+`process.env.VITECONFIG_SSL_PATH`, since the certificates live outside the container
+image. The two flags are independent of each other's order.
 
 ## Pages published by the Vue stack
 

@@ -331,9 +331,16 @@ class InstallCommand extends Command implements PromptsForMissingInput
             base_path('vite.config.js')
         );
 
+        $path = $this->option('container')
+            ? '            path: process.env.VITECONFIG_SSL_PATH,'
+            : "            // path: '/var/local/ssl',";
+
         $this->replaceInFile(
             '    ],' . PHP_EOL . '});',
-            '        https(),' . PHP_EOL . '    ],' . PHP_EOL . '}));',
+            '        https({' . PHP_EOL
+                . $path . PHP_EOL
+                . '        }),' . PHP_EOL
+                . '    ],' . PHP_EOL . '}));',
             base_path('vite.config.js')
         );
     }
