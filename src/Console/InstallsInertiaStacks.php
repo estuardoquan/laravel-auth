@@ -16,7 +16,11 @@ trait InstallsInertiaStacks
     protected function installInertiaVueStack()
     {
         // Install Inertia...
-        if (! $this->requireComposerPackages(['inertiajs/inertia-laravel:^2.0', 'laravel/sanctum:^4.0', 'tightenco/ziggy:^2.0'])) {
+        if (! $this->requireComposerPackages([
+            'inertiajs/inertia-laravel:^2.0',
+            // 'laravel/sanctum:^4.0', // We're using passport, this will remove on next big update
+            'tightenco/ziggy:^2.0'
+        ])) {
             return 1;
         }
 
@@ -126,9 +130,9 @@ trait InstallsInertiaStacks
 
         if (! $this->option('dark')) {
             $this->removeDarkClasses((new Finder)
-                ->in(resource_path('js'))
-                ->name('*.vue')
-                ->notName('Welcome.vue')
+                    ->in(resource_path('js'))
+                    ->name('*.vue')
+                    ->notName('Welcome.vue')
             );
         }
 
